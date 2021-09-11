@@ -10,7 +10,7 @@ h1{
 /* botões */
 
 #buttons-container button{
-    borde: none;
+    border: none;
     padding: 10px 15px;
     margin: 0 10px;
 }
