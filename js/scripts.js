@@ -1,7 +1,7 @@
 let x = document.querySelector(".x");
 let o = document.querySelector(".o");
 let boxes = document.querySelectorAll(".box");
-let button = document.querySelectorAll("#buttons-container button");
+let buttons = document.querySelectorAll("#buttons-container button");
 let messageContainer = document.querySelector("#message");
 let messageText = document.querySelector("#message p");
 let secondPlayer;
@@ -37,6 +37,17 @@ for(let i = 0; i < boxes.length; i++){
 
             if(player1 == player2){
                 player1++;
+
+                if(secondPlayer == "ai-player"){
+
+                    // funcao executar a jogada
+
+                    computerPlay();
+                    
+
+                    player2++;
+                }
+
             }else{
                 player2++;
             }
@@ -47,6 +58,27 @@ for(let i = 0; i < boxes.length; i++){
         }
 
     });
+}
+
+// evento para saber se é 2 players ou IA
+
+for(let i = 0; i < buttons.length; i++){
+
+    buttons[i].addEventListener("click", function(){
+
+        secondPlayer = this.getAttribute("id");
+
+        for(let j = 0; j < buttons.length; j++){
+            buttons[j].style.display = "none";
+        }
+
+        setTimeout(function(){
+
+            let container = document.querySelector("#container");
+            container.classList.remove("hide");
+        }, 500);
+    })
+
 }
 
 // checa quem venceu
@@ -263,5 +295,41 @@ function declareWinner(winner){
             boxesToRemove[i].parentNode.removeChild(boxesToRemove[i]);
         }
     }, 3000);
+
+}
+
+// executar a lógica de jogada da IA
+
+function computerPlay(){
+    
+    let cloneO = o.cloneNode(true);
+    counter = 0;
+    filled = 0;
+
+    for(let i = 0; i < boxes.length; i++){
+
+        let randomNumber = Math.floor(Math.random() * 5);
+
+        // só preencher se estiver vazio o filho
+        if(boxes[i].childNodes[0] == undefined){
+            if(randomNumber <= 1){
+               
+                setTimeout(function(){
+                    boxes[i].appendChild(cloneO);
+                    
+                }, 1500)
+                counter++;
+                break;
+            }
+        // checagem de quantas estão preenchidas
+        }else{
+            filled++;
+        }
+    }
+
+
+    if(counter == 0 && filled < 9){
+        computerPlay();
+    }
 
 }
